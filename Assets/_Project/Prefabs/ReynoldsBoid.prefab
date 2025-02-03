@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2627952022533955204}
   - component: {fileID: 4862272374300527420}
-  - component: {fileID: 7033950250391137589}
   - component: {fileID: 3146315724030603801}
   - component: {fileID: 2838100489454684231}
+  - component: {fileID: 6476640798668025116}
   m_Layer: 0
-  m_Name: Triangle
+  m_Name: ReynoldsBoid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.78039217, g: 0.21344744, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -90,31 +90,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7033950250391137589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2783245966313099258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 142c2f758226c8340a465b059bcd68c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Speed>k__BackingField: 1
-  <MaxSpeed>k__BackingField: 3
-  <Acceleration>k__BackingField: 10
-  <NeighborRadius>k__BackingField: 3
-  <SeparationRadius>k__BackingField: 1
-  <AvoidanceRadius>k__BackingField: 2
-  <CohesionWeight>k__BackingField: 1
-  <AlignmentWeight>k__BackingField: 1
-  <SeparationWeight>k__BackingField: 1.5
-  <AvoidanceWeight>k__BackingField: 3
-  <RotationSpeed>k__BackingField: 5
-  <TargetAttractionWeight>k__BackingField: 15
-  <Target>k__BackingField: {fileID: 0}
 --- !u!50 &3146315724030603801
 Rigidbody2D:
   serializedVersion: 5
@@ -192,3 +167,28 @@ PolygonCollider2D:
       - {x: -0.5, y: -0.28866667}
       - {x: 0.5, y: -0.28866667}
   m_UseDelaunayMesh: 0
+--- !u!114 &6476640798668025116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2783245966313099258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 142c2f758226c8340a465b059bcd68c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <StartSpeed>k__BackingField: 13
+  <MaxSpeed>k__BackingField: 5
+  <Acceleration>k__BackingField: 11
+  <NeighborRadius>k__BackingField: 1
+  <SeparationRadius>k__BackingField: 1
+  <AvoidanceRadius>k__BackingField: 1
+  <CohesionWeight>k__BackingField: 1.6
+  <AlignmentWeight>k__BackingField: 1
+  <SeparationWeight>k__BackingField: 3.8
+  <AvoidanceWeight>k__BackingField: 2
+  <RotationSpeed>k__BackingField: 1.4
+  <TargetAttractionWeight>k__BackingField: 18
+  <Target>k__BackingField: {fileID: 0}
