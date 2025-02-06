@@ -4,15 +4,13 @@ namespace _Project.Scripts.Boids
 {
     public class ReynoldsBoid : MonoBehaviour, IBoid
     {
-        
+        // TODO: Вынести 
         /// <summary>
         /// В основе модели лежит классическая модель поведения роевых агентов (Boids) Крэйга Рейнольдса, которая
         /// включает три ключевых правила:
         /// 1. Притяжение к центру (Cohesion).
         /// 2. Выравнивание скорости (Alignment).
         /// 3. Разделение (Separation).
-        ///
-        /// Дополнительно были реализованы: избегание препятствий (Avoidance), приятжение к цели (Target attraction).
         /// </summary>
         
         [field: SerializeField, Header("Основные параметры")]
@@ -43,13 +41,18 @@ namespace _Project.Scripts.Boids
         [field: SerializeField, Tooltip("Скорость вращения агента")]
         public float RotationSpeed { get; private set; } = 2f;
 
-        [field: SerializeField, Tooltip("Вес притяжения к цели")]
-        public float TargetAttractionWeight { get; private set; } = 3f;
+        [field: SerializeField, Tooltip("Максимальный вес притяжения к цели")]
+        public float MaxTargetAttractionWeight { get; private set; } = 3f;
+
+        [field: SerializeField, Tooltip("Минимальный вес притяжения к цели")]
+        public float MinTargetAttractionWeight { get; private set; } = 0.5f;
 
         [field: SerializeField, Header("Цель")]
         public Transform Target { get; private set; }
 
         public Vector2 Velocity { get; private set; }
+        public Vector3 Position => transform.position;
+
         
         private Rigidbody2D _rb;
         private BoidManager _manager;
@@ -65,6 +68,14 @@ namespace _Project.Scripts.Boids
         {
             Move();
             RotateTowards();
+        }
+        
+        private float CalculateTargetAttractionWeight()
+        {
+            if (!Target) return 0f;
+
+            var distance = Vector2.Distance(transform.position, Target.position);
+            return Mathf.Lerp(MinTargetAttractionWeight, MaxTargetAttractionWeight, distance / NeighborRadius);
         }
 
         private Vector2 Cohesion()
@@ -130,16 +141,16 @@ namespace _Project.Scripts.Boids
             return hit.collider ? Vector2.Reflect(Velocity.normalized, hit.normal) : Vector2.zero;
         }
 
-        public Vector3 Position => transform.position;
         public void Move()
         {
             var cohesion = Cohesion() * CohesionWeight;
             var alignment = Alignment() * AlignmentWeight;
             var separation = Separation() * SeparationWeight;
             var avoidance = AvoidObstacles() * AvoidanceWeight;
+            var targetAttractionWeight = CalculateTargetAttractionWeight();
             var targetAttraction =
                 (Target
-                    ? (Vector2)(Target.position - transform.position).normalized * TargetAttractionWeight
+                    ? (Vector2)(Target.position - transform.position).normalized * targetAttractionWeight
                     : Vector2.zero);
 
             var acceleration = cohesion + alignment + separation + avoidance + targetAttraction;

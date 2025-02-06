@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32f7606f20714161b044f34d2b5deef1, type: 3}
+  m_Name: Attack speed
+  m_EditorClassIdentifier: 
+  <Type>k__BackingField: 4
+  <UpgradeValues>k__BackingField:
+  - 0.3
+  - 0.4
+  - 0.5
+  - 0.7
+  - 0.95
+  - 1.2
+  - 1.5
+  - 1.85
+  - 2.25
+  - 2.5
+  - 3
+  <HasUnlimitedUpgrade>k__BackingField: 0
+  <UnlimitedUpgradeBy>k__BackingField: 0

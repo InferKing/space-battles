@@ -6,6 +6,7 @@ namespace _Project.Scripts.Boids
 {
     public class LimitedInfluenceBoid : MonoBehaviour, IBoid
     {
+        // TODO: реализовать ближе к цели - меньше вес притяжения, дальше - больше вес
         [field: SerializeField, Header("Основные параметры")]
         public float StartSpeed { get; private set; } = 5f;
 
@@ -38,8 +39,8 @@ namespace _Project.Scripts.Boids
 
         [field: SerializeField, Tooltip("Вес притяжения к цели")]
         public float TargetAttractionWeight { get; private set; } = 3f;
-
-        [field: SerializeField, Header("Цели")]
+        
+        [field: SerializeField, Header("Цель")]
         public Transform Target { get; private set; }
 
         private Vector2 _velocity;
@@ -70,6 +71,7 @@ namespace _Project.Scripts.Boids
             var alignment = Alignment(neighbors) * AlignmentWeight;
             var separation = Separation(neighbors) * SeparationWeight;
             var avoidance = AvoidObstacles() * AvoidanceWeight;
+
             var targetAttraction =
                 (Target
                     ? (Vector2)(Target.position - transform.position).normalized * TargetAttractionWeight

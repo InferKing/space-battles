@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3146315724030603801}
   - component: {fileID: 2838100489454684231}
   - component: {fileID: 6476640798668025116}
+  - component: {fileID: 2211968071760291113}
   m_Layer: 0
   m_Name: ReynoldsBoid
   m_TagString: Untagged
@@ -182,13 +183,26 @@ MonoBehaviour:
   <StartSpeed>k__BackingField: 13
   <MaxSpeed>k__BackingField: 5
   <Acceleration>k__BackingField: 11
-  <NeighborRadius>k__BackingField: 1
+  <NeighborRadius>k__BackingField: 5
   <SeparationRadius>k__BackingField: 1
   <AvoidanceRadius>k__BackingField: 1
-  <CohesionWeight>k__BackingField: 1.6
+  <CohesionWeight>k__BackingField: 1.4
   <AlignmentWeight>k__BackingField: 1
-  <SeparationWeight>k__BackingField: 3.8
-  <AvoidanceWeight>k__BackingField: 2
+  <SeparationWeight>k__BackingField: 5.8
+  <AvoidanceWeight>k__BackingField: 3
   <RotationSpeed>k__BackingField: 1.4
-  <TargetAttractionWeight>k__BackingField: 18
+  <MaxTargetAttractionWeight>k__BackingField: 13.5
+  <MinTargetAttractionWeight>k__BackingField: 2.7
   <Target>k__BackingField: {fileID: 0}
+--- !u!114 &2211968071760291113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2783245966313099258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba912d33f384c58bf0f41f17da4cac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
