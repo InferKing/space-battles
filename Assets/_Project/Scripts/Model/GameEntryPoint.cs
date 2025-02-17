@@ -3,17 +3,7 @@ using UnityEngine;
 using Zenject;
 
 namespace _Project.Scripts.Model
-{
-    public class SomeShit
-    {
-        public string name;
-        
-        public SomeShit(string name)
-        {
-            this.name = name;
-        }
-    }
-    
+{   
     public class GameEntryPoint : MonoInstaller
     {
         [SerializeField] private Star _starPrefab;
@@ -21,7 +11,9 @@ namespace _Project.Scripts.Model
         
         public override void InstallBindings()
         {
-            Container.BindInstance(new SomeShit("Здарова")).AsSingle();
+            // TODO: откуда берется Instance FieldParameters?
+            // Container.Bind<FieldParameters>().FromInstance()
+            
             Container.BindFactory<Star, Star.Factory>().FromComponentInNewPrefab(_starPrefab);
             Container.BindFactory<Team, Ship, Ship.Factory>().FromComponentInNewPrefab(_shipPrefab);
         }
