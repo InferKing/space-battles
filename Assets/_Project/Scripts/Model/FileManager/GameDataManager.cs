@@ -10,6 +10,11 @@ namespace _Project.Scripts.Model.FileManager
         public void Save<T>(string fileName, T data, string folderName = Constants.DefaultDataFolder)
         {
             var pathToDirectory = Path.Combine(Application.persistentDataPath, folderName);
+
+            var settings = new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
             
             if (!Directory.Exists(pathToDirectory))
             {
@@ -20,7 +25,7 @@ namespace _Project.Scripts.Model.FileManager
 
             using FileStream stream = new(pathToFile, FileMode.Create);
             using StreamWriter writer = new(stream);
-            string jsonData = JsonConvert.SerializeObject(data);
+            string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented, settings);
             writer.Write(jsonData);
         }
 

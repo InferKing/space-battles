@@ -10,6 +10,13 @@ namespace _Project.Scripts.Model
         public const float MinGenerationArea = 10f;
         public const float MaxGenerationArea = 200f;
 
+        public const DifficultyType OptimalDifficulty = DifficultyType.Medium;
+        public const float OptimalDistanceBetweenStars = 10f;
+        public const float OptimalGenerationArea = 30f;
+        public const float OptimalTeamRadius = 8f;
+        public const int OptimalStarCount = 14;
+        public const int OptimalEdgeCount = 21;
+        
         public const float MinBaseSpeed = 1f;
         public const float MaxBaseSpeed = 5f;
         public const float MinBaseAcceleration = 2f;
@@ -29,5 +36,6 @@ namespace _Project.Scripts.Model
         
         public const string DefaultDataFolder = "Game data";
         public const string LocalizationFolder = "Localization";
+        public const string SessionFile = "session.json";
     }
 }

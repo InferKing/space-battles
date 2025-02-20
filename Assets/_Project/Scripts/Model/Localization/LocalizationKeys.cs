@@ -3,6 +3,12 @@
     public enum LocalizationKeys
     {
         // TODO: заполнить ключами локализации
-        LanguageName
+        LanguageName,
+        ErrorGenerationArea,
+        ErrorTeamRadius,
+        ErrorEdgeCount,
+        ErrorDistanceStars,
+        ErrorStarCount,
+        
     }
 }

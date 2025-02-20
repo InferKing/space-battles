@@ -1,49 +1,51 @@
 using System.Collections.Generic;
 using _Project.Scripts.Model;
-using _Project.Scripts.View.Difficulty;
 using UnityEngine;
 using Zenject;
 
-public class PickTeamDescription : MonoBehaviour
+namespace _Project.Scripts.View.Difficulty
 {
-    [SerializeField] private Team _team;
-    [SerializeField] private List<TeamAttributeSetter> _teamAttributeSetters;
-    
-    private TeamsData _teamsData;
-    
-    [Inject]
-    private void Construct(TeamsData teamsData)
+    public class PickTeamDescription : MonoBehaviour
     {
-        _teamsData = teamsData;
-    }
-
-    private void Start()
-    {
-        // TODO: переделать нахуй. почему switch?????
-        for (var i = 0; i < _teamAttributeSetters.Count; i++)
+        [SerializeField] private Team _team;
+        [SerializeField] private List<TeamAttributeSetter> _teamAttributeSetters;
+    
+        private TeamsData _teamsData;
+    
+        [Inject]
+        private void Construct(TeamsData teamsData)
         {
-            var playerData = _teamsData.GetPlayerData(_team);
+            _teamsData = teamsData;
+        }
 
-            switch (i)
+        private void Start()
+        {
+            // TODO: переделать нахуй. почему switch?????
+            for (var i = 0; i < _teamAttributeSetters.Count; i++)
             {
-                case 0:
-                    _teamAttributeSetters[i].SetData(Constants.MinBaseStarHealth, Constants.MaxBaseStarHealth, playerData.BaseStarHealth, 0);
-                    break;
-                case 1:
-                    _teamAttributeSetters[i].SetData(Constants.MinBaseShipHealth, Constants.MaxBaseShipHealth, playerData.BaseShipHealth, 0.1f);
-                    break;
-                case 2:
-                    _teamAttributeSetters[i].SetData(Constants.MinBaseDamage, Constants.MaxBaseDamage, playerData.BaseDamage, 0.2f);
-                    break;
-                case 3:
-                    _teamAttributeSetters[i].SetData(Constants.MinBaseAttackSpeed, Constants.MaxBaseAttackSpeed, playerData.BaseAttackSpeed, 0.3f);
-                    break;
-                case 4:
-                    _teamAttributeSetters[i].SetData(Constants.MinBaseSpeed, Constants.MaxBaseSpeed, playerData.BaseMaxSpeed, 0.4f);
-                    break;
-                case 5:
-                    _teamAttributeSetters[i].SetData(Constants.MinBaseShipLimit, Constants.MaxBaseShipLimit, playerData.BaseShipLimit, 0.5f);
-                    break;
+                var playerData = _teamsData.GetPlayerData(_team);
+
+                switch (i)
+                {
+                    case 0:
+                        _teamAttributeSetters[i].SetData(Constants.MinBaseStarHealth, Constants.MaxBaseStarHealth, playerData.BaseStarHealth, 0);
+                        break;
+                    case 1:
+                        _teamAttributeSetters[i].SetData(Constants.MinBaseShipHealth, Constants.MaxBaseShipHealth, playerData.BaseShipHealth, 0.1f);
+                        break;
+                    case 2:
+                        _teamAttributeSetters[i].SetData(Constants.MinBaseDamage, Constants.MaxBaseDamage, playerData.BaseDamage, 0.2f);
+                        break;
+                    case 3:
+                        _teamAttributeSetters[i].SetData(Constants.MinBaseAttackSpeed, Constants.MaxBaseAttackSpeed, playerData.BaseAttackSpeed, 0.3f);
+                        break;
+                    case 4:
+                        _teamAttributeSetters[i].SetData(Constants.MinBaseSpeed, Constants.MaxBaseSpeed, playerData.BaseMaxSpeed, 0.4f);
+                        break;
+                    case 5:
+                        _teamAttributeSetters[i].SetData(Constants.MinBaseShipLimit, Constants.MaxBaseShipLimit, playerData.BaseShipLimit, 0.5f);
+                        break;
+                }
             }
         }
     }
