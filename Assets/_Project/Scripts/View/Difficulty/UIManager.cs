@@ -11,6 +11,7 @@ namespace _Project.Scripts.View.Difficulty
         [SerializeField] private UIWindow _teamPanel;
         [SerializeField] private UIWindow _settingsPanel;
 
+        // TODO: слайдеры должны переехать в UIParameters
         [Header("Settings UI for the game session")] 
         [SerializeField] private DifficultyPicker _difficultyPicker;
         [SerializeField] private Slider _starCount;

@@ -13,15 +13,15 @@ namespace _Project.Scripts.View.Difficulty
         public event Action<DifficultyType> DifficultyPicked;
 
         public DifficultyType Type => _difficulty;
-        
-        public void Toggle(bool isOn)
+
+        private void Start()
         {
-            _toggle.isOn = isOn;
+            _toggle.onValueChanged.AddListener((value) => DifficultyPicked?.Invoke(_difficulty));
         }
 
-        public void Pick()
+        public void Toggle(bool isOn)
         {
-            DifficultyPicked?.Invoke(_difficulty);
+            _toggle.SetIsOnWithoutNotify(isOn);
         }
     }
 }

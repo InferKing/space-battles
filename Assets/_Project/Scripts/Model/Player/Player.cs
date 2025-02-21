@@ -1,6 +1,6 @@
 ﻿using _Project.Scripts.Configs;
 
-namespace _Project.Scripts.Model
+namespace _Project.Scripts.Model.Player
 {
     public class Player
     {

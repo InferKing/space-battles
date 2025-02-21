@@ -4,7 +4,7 @@ using _Project.Scripts.View.Difficulty;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Model
+namespace _Project.Scripts.Model.Player
 {
     public class PlayerSessionManager : MonoBehaviour
     {
@@ -13,7 +13,7 @@ namespace _Project.Scripts.Model
         private IFileManager _fileManager;
         private Team _selectedTeam;
         private DifficultyType _difficulty;
-        private FieldParameters _fieldParameters = new(
+        private readonly FieldParameters _fieldParameters = new(
             new Vector2(Constants.OptimalGenerationArea, Constants.OptimalGenerationArea));
 
         [Inject]
@@ -24,13 +24,6 @@ namespace _Project.Scripts.Model
 
         private void OnEnable()
         {
-            _fieldParameters = new FieldParameters(
-                new Vector2(Constants.OptimalGenerationArea, Constants.OptimalGenerationArea),
-                Constants.OptimalStarCount,
-                Constants.OptimalDistanceBetweenStars,
-                Constants.OptimalTeamRadius,
-                Constants.OptimalEdgeCount);
-            
             _uiManager.PlayerReady += OnPlayerReady;
             _uiManager.TeamPicked += OnTeamPicked;
             _uiManager.DifficultyPicked += OnDifficultyPicked;
@@ -92,6 +85,7 @@ namespace _Project.Scripts.Model
 
         private void OnDifficultyPicked(DifficultyType difficulty)
         {
+            Debug.Log(difficulty);
             _difficulty = difficulty;
         }
 

@@ -13,8 +13,8 @@ namespace _Project.Scripts.Model
         {
             SetStarCount(starCount);
             SetMinDistanceBetweenStars(minDistanceBetweenStars);
-            SetTeamCircleRadius(teamCircleRadius);
             SetGenerationArea((int)generationArea.x);
+            SetTeamCircleRadius(teamCircleRadius);
             SetDesiredEdgeCount(desiredEdgeCount);
         }
         

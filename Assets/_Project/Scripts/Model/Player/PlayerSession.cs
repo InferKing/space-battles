@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace _Project.Scripts.Model
+namespace _Project.Scripts.Model.Player
 {
     [System.Serializable]
     public class PlayerSession

@@ -5,6 +5,9 @@ namespace _Project.Scripts.Model
     public class Constants
     {
         public const int MaxStars = 128;
+        public const int MinStars = 6;
+        public const float MinTeamRadius = 7f;
+        public const float MaxTeamRadius = 20f;
         public const float MinDistanceBetweenStars = 6f;
         public const float MaxDistanceBetweenStars = 20f;
         public const float MinGenerationArea = 10f;
@@ -13,7 +16,7 @@ namespace _Project.Scripts.Model
         public const DifficultyType OptimalDifficulty = DifficultyType.Medium;
         public const float OptimalDistanceBetweenStars = 10f;
         public const float OptimalGenerationArea = 30f;
-        public const float OptimalTeamRadius = 8f;
+        public const float OptimalTeamRadius = 12f;
         public const int OptimalStarCount = 14;
         public const int OptimalEdgeCount = 21;
         

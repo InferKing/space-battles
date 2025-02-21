@@ -12,7 +12,9 @@ namespace _Project.Scripts.Model
         public override void InstallBindings()
         {
             // TODO: откуда берется Instance FieldParameters?
-            // Container.Bind<FieldParameters>().FromInstance()
+            Container.Bind<FieldParameters>()
+                .FromInstance(new FieldParameters(new Vector2(Constants.OptimalGenerationArea,
+                    Constants.OptimalGenerationArea))).AsSingle();
             
             Container.BindFactory<Star, Star.Factory>().FromComponentInNewPrefab(_starPrefab);
             Container.BindFactory<Team, Ship, Ship.Factory>().FromComponentInNewPrefab(_shipPrefab);
