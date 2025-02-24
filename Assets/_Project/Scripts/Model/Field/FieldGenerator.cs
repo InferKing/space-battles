@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Model
+namespace _Project.Scripts.Model.Field
 {
     public class FieldGenerator : MonoBehaviour
     {
@@ -36,7 +36,7 @@ namespace _Project.Scripts.Model
             for (int i = 0; i < teamCount; i++)
             {
                 float angle = i * Mathf.PI * 2 / teamCount;
-                Vector2 pos = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * _fieldParameters.TeamCircleRadius;
+                Vector2 pos = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * _fieldParameters.MapConfig.TeamRadius;
                 pos += Vector2.zero; // Центр области
 
                 Star star = _starFactory.Create();
@@ -53,7 +53,7 @@ namespace _Project.Scripts.Model
 
         private void GenerateOtherStars()
         {
-            int starsToGenerate = _fieldParameters.StarCount - _stars.Count;
+            int starsToGenerate = _fieldParameters.MapConfig.Stars - _stars.Count;
             int generated = 0;
             int maxAttempts = starsToGenerate * 100;
             int attempts = 0;
@@ -63,8 +63,8 @@ namespace _Project.Scripts.Model
                 attempts++;
 
                 Vector2 candidate = new Vector2(
-                    Random.Range(-_fieldParameters.GenerationArea.x / 2, _fieldParameters.GenerationArea.x / 2),
-                    Random.Range(-_fieldParameters.GenerationArea.y / 2, _fieldParameters.GenerationArea.y / 2)
+                    Random.Range(-_fieldParameters.MapConfig.Size.x / 2, _fieldParameters.MapConfig.Size.x / 2),
+                    Random.Range(-_fieldParameters.MapConfig.Size.y / 2, _fieldParameters.MapConfig.Size.y / 2)
                 );
 
                 if (IsValidPosition(candidate))
@@ -82,7 +82,7 @@ namespace _Project.Scripts.Model
         {
             foreach (var star in _stars)
             {
-                if (Vector2.Distance(candidate, star.transform.position) < _fieldParameters.MinDistanceBetweenStars)
+                if (Vector2.Distance(candidate, star.transform.position) < _fieldParameters.MapConfig.DistanceStars)
                     return false;
             }
 
@@ -116,7 +116,7 @@ namespace _Project.Scripts.Model
                 }
             }
 
-            int extraEdgesNeeded = _fieldParameters.DesiredEdgeCount - mstEdges.Count;
+            int extraEdgesNeeded = _fieldParameters.MapConfig.CountEdges(_fieldParameters.EdgeAmountType) - mstEdges.Count;
             List<Edge> extraEdges = new List<Edge>();
 
             allPossibleEdges.Sort((a, b) => a.Distance.CompareTo(b.Distance));
@@ -190,6 +190,7 @@ namespace _Project.Scripts.Model
             return mstEdges;
         }
 
+        // TODO: вынести метод в отображение
         private GameObject CreateDashedLine(Vector3 start, Vector3 end)
         {
             GameObject lineObj = new GameObject()

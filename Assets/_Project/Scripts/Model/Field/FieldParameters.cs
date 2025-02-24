@@ -1,90 +1,61 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
+using _Project.Scripts.Model.GameParameters;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace _Project.Scripts.Model
+namespace _Project.Scripts.Model.Field
 {
     [Serializable]
     public class FieldParameters
     {
-        public FieldParameters(Vector2 generationArea, int starCount = Constants.OptimalStarCount, 
-            float minDistanceBetweenStars = Constants.OptimalDistanceBetweenStars, 
-            float teamCircleRadius = Constants.OptimalTeamRadius, int desiredEdgeCount = Constants.OptimalEdgeCount)
-        {
-            SetStarCount(starCount);
-            SetMinDistanceBetweenStars(minDistanceBetweenStars);
-            SetGenerationArea((int)generationArea.x);
-            SetTeamCircleRadius(teamCircleRadius);
-            SetDesiredEdgeCount(desiredEdgeCount);
-        }
+        [JsonIgnore] private MapConfig _mapConfig;
+        [JsonProperty] private string _mapConfigPath;
+        [JsonProperty] private EdgeAmountType _edgeAmountType;
         
-        [JsonProperty] public int StarCount { get; private set; }
-        [JsonProperty] public float MinDistanceBetweenStars { get; private set; }
-        [JsonProperty] public float TeamCircleRadius { get; private set; }
-        [JsonProperty] public int DesiredEdgeCount { get; private set; }
-        [JsonProperty] public Vector2 GenerationArea { get; private set; }
-        
-        public void SetStarCount(int value, Action<bool> validationResult = null)
+        public FieldParameters(MapConfig mapConfig, EdgeAmountType edgeAmountType)
         {
-            var teams = Enum.GetValues(typeof(Team)).Length - 1;
-
-            if (value <= teams || value > Constants.MaxStars)
-            {
-                validationResult?.Invoke(false);
-                return;
-            }
-
-            StarCount = value;
-            validationResult?.Invoke(true);
+            MapConfig = mapConfig;
+            EdgeAmountType = edgeAmountType;
         }
 
-        public void SetMinDistanceBetweenStars(float distance, Action<bool> validationResult = null)
+        [JsonIgnore]
+        public MapConfig MapConfig
         {
-            if (distance < Constants.MinDistanceBetweenStars || distance > Constants.MaxDistanceBetweenStars)
+            get => _mapConfig;
+            set
             {
-                validationResult?.Invoke(false);
-                return;
+                if (!value) return;
+                
+                _mapConfig = value;
+                _mapConfigPath = value.name;
             }
-
-            MinDistanceBetweenStars = distance;
-            validationResult?.Invoke(true);
         }
 
-        public void SetTeamCircleRadius(float radius, Action<bool> validationResult = null)
+        [JsonIgnore]
+        public EdgeAmountType EdgeAmountType
         {
-            // TODO: Надо проверить работу, возможно неверное условие
-            if (radius < GenerationArea.x / 2 || radius > GenerationArea.x)
+            get => _edgeAmountType;
+            set
             {
-                validationResult?.Invoke(false);
-                return;
+                var intValue = (int)value;
+                var isValid = intValue < Enum.GetValues(typeof(EdgeAmountType)).Length && intValue >= 0;
+                
+                if (isValid)
+                {
+                    _edgeAmountType = value;
+                }
             }
-
-            TeamCircleRadius = radius;
-            validationResult?.Invoke(true);
         }
 
-        public void SetDesiredEdgeCount(int edges, Action<bool> validationResult = null)
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
         {
-            if (edges < StarCount - 1 || edges > StarCount * 2)
-            {
-                validationResult?.Invoke(false);
-                return;
-            }
-
-            DesiredEdgeCount = edges;
-            validationResult?.Invoke(true);
-        }
-
-        public void SetGenerationArea(int size, Action<bool> validationResult = null)
-        {
-            if (size < Constants.MinGenerationArea || size > Constants.MaxGenerationArea)
-            {
-                validationResult?.Invoke(false);
-                return;
-            }
-
-            GenerationArea = new Vector2(size, size);
-            validationResult?.Invoke(true);
+            if (string.IsNullOrEmpty(_mapConfigPath)) return;
+            
+            var path = Path.Combine(Constants.MapConfigsFolder, _mapConfigPath);
+            _mapConfig = Resources.Load<MapConfig>(path);
         }
     }
 }

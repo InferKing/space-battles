@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using _Project.Scripts.Model.Field;
+using Newtonsoft.Json;
 
 namespace _Project.Scripts.Model.Player
 {

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using _Project.Scripts.Model.GameParameters;
 
 namespace _Project.Scripts.Model
 {
-    public class Constants
+    public abstract class Constants
     {
         public const int MaxStars = 128;
         public const int MinStars = 6;
@@ -14,6 +14,8 @@ namespace _Project.Scripts.Model
         public const float MaxGenerationArea = 200f;
 
         public const DifficultyType OptimalDifficulty = DifficultyType.Medium;
+        public const MapType OptimalMapSize = MapType.Medium;
+        public const EdgeAmountType OptimalEdgeAmount = EdgeAmountType.Medium;
         public const float OptimalDistanceBetweenStars = 10f;
         public const float OptimalGenerationArea = 30f;
         public const float OptimalTeamRadius = 12f;
@@ -40,5 +42,6 @@ namespace _Project.Scripts.Model
         public const string DefaultDataFolder = "Game data";
         public const string LocalizationFolder = "Localization";
         public const string SessionFile = "session.json";
+        public const string MapConfigsFolder = "Map";
     }
 }

@@ -1,8 +1,11 @@
-﻿using _Project.Scripts.Model.Core;
+﻿using _Project.Scripts.Model;
+using _Project.Scripts.Model.Core;
+using _Project.Scripts.Model.FileManager;
+using _Project.Scripts.Model.Player;
 using UnityEngine;
 using Zenject;
 
-namespace _Project.Scripts.Model
+namespace _Project.Scripts
 {   
     public class GameEntryPoint : MonoInstaller
     {
@@ -11,10 +14,11 @@ namespace _Project.Scripts.Model
         
         public override void InstallBindings()
         {
-            // TODO: откуда берется Instance FieldParameters?
-            Container.Bind<FieldParameters>()
-                .FromInstance(new FieldParameters(new Vector2(Constants.OptimalGenerationArea,
-                    Constants.OptimalGenerationArea))).AsSingle();
+            var fileManager = new GameDataManager();
+            var playerSession = fileManager.Load<PlayerSession>(Constants.SessionFile);
+            var fieldParameters = playerSession.FieldParameters;
+
+            Container.BindInstance(fieldParameters).AsSingle();
             
             Container.BindFactory<Star, Star.Factory>().FromComponentInNewPrefab(_starPrefab);
             Container.BindFactory<Team, Ship, Ship.Factory>().FromComponentInNewPrefab(_shipPrefab);
