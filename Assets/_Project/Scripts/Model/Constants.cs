@@ -16,6 +16,7 @@ namespace _Project.Scripts.Model
         public const DifficultyType OptimalDifficulty = DifficultyType.Medium;
         public const MapType OptimalMapSize = MapType.Medium;
         public const EdgeAmountType OptimalEdgeAmount = EdgeAmountType.Medium;
+        public const float SpawnDelay = 0.5f;
         public const float OptimalDistanceBetweenStars = 10f;
         public const float OptimalGenerationArea = 30f;
         public const float OptimalTeamRadius = 12f;

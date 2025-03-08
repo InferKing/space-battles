@@ -4,10 +4,9 @@
     {
         float CurrentHealth { get; }
         float MaxHealth { get; }
-        bool IsAlive => CurrentHealth > Constants.Epsilon;
+        bool IsAlive { get; }
         Team Team { get; }
         
-        void TakeDamage(float amount);
-        void Die();
+        void TakeDamage(Team attackerTeam, float amount);
     }
 }

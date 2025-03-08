@@ -20,4 +20,4 @@ MonoBehaviour:
   <BaseDamage>k__BackingField: 3
   <BaseAttackSpeed>k__BackingField: 0.8
   <BaseProjectileSpeed>k__BackingField: 5
-  <BaseShipLimit>k__BackingField: 10
+  <BaseShipLimit>k__BackingField: 50

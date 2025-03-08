@@ -1,4 +1,5 @@
 ﻿using System;
+using _Project.Scripts.Model.StarSystem;
 using UniRx;
 using Zenject;
 

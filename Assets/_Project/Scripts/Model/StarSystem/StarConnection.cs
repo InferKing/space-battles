@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Project.Scripts.Model.StarSystem;
+using UnityEngine;
 
 namespace _Project.Scripts.Model
 {

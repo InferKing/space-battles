@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using _Project.Scripts.Model.Core;
 using UnityEngine;
 
 namespace _Project.Scripts.Boids
@@ -48,33 +50,39 @@ namespace _Project.Scripts.Boids
         public float MinTargetAttractionWeight { get; private set; } = 0.5f;
 
         [field: SerializeField, Header("Цель")]
-        public Transform Target { get; private set; }
+        public Vector2 Target { get; set; }
 
         public Vector2 Velocity { get; private set; }
         public Vector3 Position => transform.position;
-
         
         private Rigidbody2D _rb;
-        private BoidManager _manager;
-
+        private List<Ship> _ships;
+        private bool _isLockAutoRotation;
+        
         private void Start()
         {
             Velocity = Random.insideUnitCircle * StartSpeed;
-            _manager = FindFirstObjectByType<BoidManager>();
             _rb = GetComponent<Rigidbody2D>();
         }
 
         private void FixedUpdate()
         {
             Move();
-            RotateTowards();
+            
+            if (!_isLockAutoRotation)
+            {
+                Rotate(_rb.linearVelocity);
+            }
+        }
+
+        public void Init(List<Ship> ships)
+        {
+            _ships = ships;
         }
         
         private float CalculateTargetAttractionWeight()
         {
-            if (!Target) return 0f;
-
-            var distance = Vector2.Distance(transform.position, Target.position);
+            var distance = Vector2.Distance(transform.position, Target);
             return Mathf.Lerp(MinTargetAttractionWeight, MaxTargetAttractionWeight, distance / NeighborRadius);
         }
 
@@ -83,13 +91,11 @@ namespace _Project.Scripts.Boids
             var center = Vector2.zero;
             var count = 0;
             
-            foreach (var boid in _manager.Boids)
+            foreach (var boid in _ships)
             {
-                if ((ReynoldsBoid)boid == this) continue;
-
                 if (!(Vector2.Distance(transform.position, boid.Position) < NeighborRadius)) continue;
                 
-                center += (Vector2)boid.Position;
+                center += (Vector2)boid.transform.position;
                 count++;
             }
 
@@ -101,10 +107,8 @@ namespace _Project.Scripts.Boids
             var avgVelocity = Vector2.zero;
             var count = 0;
             
-            foreach (var boid in _manager.Boids)
+            foreach (var boid in _ships)
             {
-                if ((ReynoldsBoid)boid == this) continue;
-
                 if (!(Vector2.Distance(transform.position, boid.Position) < NeighborRadius)) continue;
                 
                 avgVelocity += boid.Velocity;
@@ -118,10 +122,8 @@ namespace _Project.Scripts.Boids
         {
             var avoid = Vector2.zero;
             
-            foreach (var boid in _manager.Boids)
+            foreach (var boid in _ships)
             {
-                if ((ReynoldsBoid)boid == this) continue;
-                
                 var distance = Vector2.Distance(transform.position, boid.Position);
                 
                 if (distance < SeparationRadius && distance > 0)
@@ -148,10 +150,7 @@ namespace _Project.Scripts.Boids
             var separation = Separation() * SeparationWeight;
             var avoidance = AvoidObstacles() * AvoidanceWeight;
             var targetAttractionWeight = CalculateTargetAttractionWeight();
-            var targetAttraction =
-                (Target
-                    ? (Vector2)(Target.position - transform.position).normalized * targetAttractionWeight
-                    : Vector2.zero);
+            var targetAttraction = (Target - (Vector2)transform.position).normalized * targetAttractionWeight;
 
             var acceleration = cohesion + alignment + separation + avoidance + targetAttraction;
             _rb.AddForce(acceleration * (Acceleration * Time.fixedDeltaTime));
@@ -162,14 +161,19 @@ namespace _Project.Scripts.Boids
             }
         }
 
-        public void RotateTowards()
+        public void Rotate(Vector2 direction)
         {
-            var targetAngle = Mathf.Atan2(_rb.linearVelocity.y, _rb.linearVelocity.x) * Mathf.Rad2Deg - 90f;
+            var targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
             var velocity = Velocity;
             
             var smoothedAngle = Mathf.SmoothDampAngle(_rb.rotation, targetAngle, ref velocity.x,
                 RotationSpeed * Time.fixedDeltaTime);
             _rb.rotation = smoothedAngle;
+        }
+
+        public void ToggleAutoRotation(bool isLock)
+        {
+            _isLockAutoRotation = isLock;
         }
     }
 }

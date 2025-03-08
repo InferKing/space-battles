@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using _Project.Scripts.Model.StarSystem;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Model.Field
 {
@@ -9,6 +12,8 @@ namespace _Project.Scripts.Model.Field
         [Header("Настройки соединения"), SerializeField] private Material _dashedLineMaterial;
         [SerializeField] private float _lineWidth = 0.1f;
 
+        public event Action<List<Star>> StarsSpawned; 
+        
         private readonly List<Star> _stars = new();
         private readonly List<StarConnection> _starConnections = new();
 
@@ -27,27 +32,27 @@ namespace _Project.Scripts.Model.Field
             GenerateTeamStars();
             GenerateOtherStars();
             ConnectStarsGraph();
+            
+            StarsSpawned?.Invoke(_stars);
         }
 
         private void GenerateTeamStars()
         {
-            System.Array teams = System.Enum.GetValues(typeof(Team));
+            Array teams = Enum.GetValues(typeof(Team));
             int teamCount = teams.Length;
             for (int i = 0; i < teamCount; i++)
             {
+                if ((Team)teams.GetValue(i) == Team.Neutral) continue; 
+                
                 float angle = i * Mathf.PI * 2 / teamCount;
                 Vector2 pos = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * _fieldParameters.MapConfig.TeamRadius;
                 pos += Vector2.zero; // Центр области
 
                 Star star = _starFactory.Create();
+                star.Init((Team)teams.GetValue(i));
                 star.transform.position = pos;
                 star.transform.SetParent(transform);
-                
-                if (star != null)
-                {
-                    star.Team = (Team)teams.GetValue(i);
-                    _stars.Add(star);
-                }
+                _stars.Add(star);
             }
         }
 
@@ -70,6 +75,7 @@ namespace _Project.Scripts.Model.Field
                 if (IsValidPosition(candidate))
                 {
                     Star star = _starFactory.Create();
+                    star.Init(Team.Neutral);
                     star.transform.position = candidate;
                     star.transform.SetParent(transform);
                     _stars.Add(star);
@@ -143,8 +149,8 @@ namespace _Project.Scripts.Model.Field
                 GameObject lineObj = CreateDashedLine(edge.From.transform.position, edge.To.transform.position);
                 StarConnection connection = new StarConnection(edge.From, edge.To, lineObj);
                 _starConnections.Add(connection);
-                edge.From.Connections.Add(connection);
-                edge.To.Connections.Add(connection);
+                edge.From.AddConnection(connection);
+                edge.To.AddConnection(connection);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace _Project.Scripts.Model.Core
+﻿namespace _Project.Scripts.Model.StarSystem
 {
     public interface IStarManager
     {

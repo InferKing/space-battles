@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using _Project.Scripts.Model.Core;
 using UnityEngine;
 
 namespace _Project.Scripts.Boids
@@ -41,23 +42,22 @@ namespace _Project.Scripts.Boids
         public float TargetAttractionWeight { get; private set; } = 3f;
         
         [field: SerializeField, Header("Цель")]
-        public Transform Target { get; private set; }
+        public Vector2 Target { get; set; }
 
         private Vector2 _velocity;
         private Rigidbody2D _rb;
-        private BoidManager _manager;
+        private List<Ship> _teammates;
 
         private void Start()
         {
             _velocity = Random.insideUnitCircle * StartSpeed;
-            _manager = FindFirstObjectByType<BoidManager>();
             _rb = GetComponent<Rigidbody2D>();
         }
 
         private void FixedUpdate()
         {
             Move();
-            RotateTowards();
+            Rotate(_rb.linearVelocity);
         }
 
         public Vector3 Position => transform.position;
@@ -72,10 +72,7 @@ namespace _Project.Scripts.Boids
             var separation = Separation(neighbors) * SeparationWeight;
             var avoidance = AvoidObstacles() * AvoidanceWeight;
 
-            var targetAttraction =
-                (Target
-                    ? (Vector2)(Target.position - transform.position).normalized * TargetAttractionWeight
-                    : Vector2.zero);
+            var targetAttraction = (Target - (Vector2)transform.position).normalized * TargetAttractionWeight;
 
             var acceleration = cohesion + alignment + separation + avoidance + targetAttraction;
             _rb.AddForce(acceleration * (Acceleration * Time.fixedDeltaTime));
@@ -86,15 +83,25 @@ namespace _Project.Scripts.Boids
             }
         }
 
-        public void RotateTowards()
+        public void Rotate(Vector2 direction)
         {
-            var targetAngle = Mathf.Atan2(_rb.linearVelocity.y, _rb.linearVelocity.x) * Mathf.Rad2Deg - 90f;
+            var targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
             var smoothedAngle = Mathf.SmoothDampAngle(_rb.rotation, targetAngle, ref _velocity.x,
                 RotationSpeed * Time.fixedDeltaTime);
             _rb.rotation = smoothedAngle;
         }
 
-        private Vector2 Cohesion(List<IBoid> neighbors)
+        public void ToggleAutoRotation(bool isLock)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Init(List<Ship> teammates)
+        {
+            _teammates = teammates;
+        }
+
+        private Vector2 Cohesion(List<Ship> neighbors)
         {
             if (neighbors.Count == 0) return Vector2.zero;
 
@@ -103,7 +110,7 @@ namespace _Project.Scripts.Boids
             return (center / neighbors.Count - (Vector2)transform.position).normalized;
         }
 
-        private Vector2 Alignment(List<IBoid> neighbors)
+        private Vector2 Alignment(List<Ship> neighbors)
         {
             if (neighbors.Count == 0) return Vector2.zero;
 
@@ -112,7 +119,7 @@ namespace _Project.Scripts.Boids
             return (avgVelocity / neighbors.Count).normalized;
         }
 
-        private Vector2 Separation(List<IBoid> neighbors)
+        private Vector2 Separation(List<Ship> neighbors)
         {
             var avoid = Vector2.zero;
             
@@ -137,14 +144,12 @@ namespace _Project.Scripts.Boids
             return hit.collider ? Vector2.Reflect(_velocity.normalized, hit.normal) : Vector2.zero;
         }
 
-        private List<IBoid> GetLimitedNeighbors()
+        private List<Ship> GetLimitedNeighbors()
         {
-            var neighbors = new List<IBoid>();
+            var neighbors = new List<Ship>();
             
-            foreach (var boid in _manager.Boids)
+            foreach (var boid in _teammates)
             {
-                if ((LimitedInfluenceBoid)boid == this) continue;
-                
                 if (Vector2.Distance(transform.position, boid.Position) < NeighborRadius)
                 {
                     neighbors.Add(boid);

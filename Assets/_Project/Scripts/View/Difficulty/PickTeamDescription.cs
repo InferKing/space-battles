@@ -37,7 +37,7 @@ namespace _Project.Scripts.View.Difficulty
                         _teamAttributeSetters[i].SetData(Constants.MinBaseDamage, Constants.MaxBaseDamage, playerData.BaseDamage, 0.2f);
                         break;
                     case 3:
-                        _teamAttributeSetters[i].SetData(Constants.MinBaseAttackSpeed, Constants.MaxBaseAttackSpeed, playerData.BaseAttackSpeed, 0.3f);
+                        _teamAttributeSetters[i].SetData(Constants.MinBaseAttackSpeed, Constants.MaxBaseAttackSpeed, playerData.BaseAttackSpeed, 0.3f, false);
                         break;
                     case 4:
                         _teamAttributeSetters[i].SetData(Constants.MinBaseSpeed, Constants.MaxBaseSpeed, playerData.BaseMaxSpeed, 0.4f);

@@ -13,11 +13,11 @@ namespace _Project.Scripts.View.Difficulty
 
         private const float AnimationTime = 1.2f;
         
-        public void SetData(float min, float max, float value, float delayTime)
+        public void SetData(float min, float max, float value, float delayTime, bool isRound = true)
         {
             _slider.minValue = min;
             _slider.maxValue = max;
-            _value.text = $"{value:N0}";
+            _value.text = isRound ? $"{value:N0}" : $"{value:N2}";
             
             PlayAnimationFill(value, delayTime);
         }

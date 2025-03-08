@@ -5,15 +5,18 @@ using _Project.Scripts.Model.GameParameters;
 using UnityEngine;
 using Zenject;
 
-public class DifficultyInstaller : MonoInstaller
+namespace _Project.Scripts.Installers
 {
-    [SerializeField] private TeamsData _teamsData;
-    [SerializeField] private List<MapConfig> _mapConfigs;
-    
-    public override void InstallBindings()
+    public class DifficultyInstaller : MonoInstaller
     {
-        Container.BindInstance(_mapConfigs).AsSingle();
-        Container.BindInstance<IFileManager>(new GameDataManager()).AsSingle();
-        Container.Bind<TeamsData>().FromInstance(_teamsData).AsSingle();
+        [SerializeField] private TeamsData _teamsData;
+        [SerializeField] private List<MapConfig> _mapConfigs;
+    
+        public override void InstallBindings()
+        {
+            Container.BindInstance<IFileManager>(new GameDataManager()).AsSingle();
+            Container.BindInstance(_mapConfigs).AsSingle();
+            Container.Bind<TeamsData>().FromInstance(_teamsData).AsSingle();
+        }
     }
 }

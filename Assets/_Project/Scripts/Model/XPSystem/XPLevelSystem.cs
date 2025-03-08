@@ -1,20 +1,15 @@
 ﻿using UniRx;
 
-namespace _Project.Scripts.Model
+namespace _Project.Scripts.Model.XPSystem
 {
     public class XpLevelSystem
     {
-        public ReactiveProperty<int> Level { get; private set; }
-        public ReactiveProperty<int> CurrentExp { get; private set; }
+        public ReactiveProperty<int> CurrentExp { get; } = new(0);
+        public ReactiveProperty<int> FreePoints { get; } = new(0);
         public int ExpToLevelUp { get; private set; } = 10;
-        public int TotalExp { get; private set; } = 0;
+        public int TotalExp { get; private set; }
+        public int Level { get; private set; }
 
-        public XpLevelSystem()
-        {
-            Level = new ReactiveProperty<int>(1);
-            CurrentExp = new ReactiveProperty<int>(0);
-        }
-        
         public void AddExp(int exp)
         {
             if (exp <= 0) return;
@@ -26,7 +21,9 @@ namespace _Project.Scripts.Model
             
             CurrentExp.Value -= ExpToLevelUp;
             ExpToLevelUp += 20;
-            Level.Value += 1;
+            Level += 1;
+            FreePoints.Value += 1;
         }
+        
     }
 }

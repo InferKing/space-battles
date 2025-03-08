@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2838100489454684231}
   - component: {fileID: 6476640798668025116}
   - component: {fileID: 2211968071760291113}
+  - component: {fileID: 3185779928983050527}
   m_Layer: 0
   m_Name: ReynoldsBoid
   m_TagString: Untagged
@@ -30,8 +31,8 @@ Transform:
   m_GameObject: {fileID: 2783245966313099258}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.555, y: 0.022, z: 0}
-  m_LocalScale: {x: 0.40000004, y: 0.40000004, z: 0.40000004}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,8 +80,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 21300000, guid: ea1a393a7b0829d44943264c7cacd139, type: 3}
   m_Color: {r: 0.78039217, g: 0.21344744, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -155,8 +156,8 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.28866667}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.47, y: 0.47}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -164,9 +165,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 0.5773587}
-      - {x: -0.5, y: -0.28866667}
-      - {x: 0.5, y: -0.28866667}
+    - - {x: 0.0015871525, y: 0.21706587}
+      - {x: -0.21589243, y: -0.19502234}
+      - {x: 0.21271813, y: -0.19660948}
   m_UseDelaunayMesh: 0
 --- !u!114 &6476640798668025116
 MonoBehaviour:
@@ -185,15 +186,15 @@ MonoBehaviour:
   <Acceleration>k__BackingField: 11
   <NeighborRadius>k__BackingField: 5
   <SeparationRadius>k__BackingField: 1
-  <AvoidanceRadius>k__BackingField: 1
+  <AvoidanceRadius>k__BackingField: 3
   <CohesionWeight>k__BackingField: 1.4
   <AlignmentWeight>k__BackingField: 1
-  <SeparationWeight>k__BackingField: 5.8
+  <SeparationWeight>k__BackingField: 8
   <AvoidanceWeight>k__BackingField: 3
-  <RotationSpeed>k__BackingField: 1.4
-  <MaxTargetAttractionWeight>k__BackingField: 13.5
+  <RotationSpeed>k__BackingField: 1.7
+  <MaxTargetAttractionWeight>k__BackingField: 25
   <MinTargetAttractionWeight>k__BackingField: 2.7
-  <Target>k__BackingField: {fileID: 0}
+  <Target>k__BackingField: {x: 0, y: 0}
 --- !u!114 &2211968071760291113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,3 +207,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aba912d33f384c58bf0f41f17da4cac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _view: {fileID: 3185779928983050527}
+--- !u!114 &3185779928983050527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2783245966313099258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fe61d061e46417886f31b2358e753c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 4862272374300527420}
