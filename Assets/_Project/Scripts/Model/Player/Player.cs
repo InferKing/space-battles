@@ -26,6 +26,7 @@ namespace _Project.Scripts.Model.Player
             AttackSpeed = new ReactiveProperty<float>(_playerData.BaseAttackSpeed);
             ProjectileSpeed = new ReactiveProperty<float>(_playerData.BaseProjectileSpeed);
             ShipLimit = new ReactiveProperty<int>(_playerData.BaseShipLimit);
+            AttackRange = new ReactiveProperty<float>(_playerData.AttackRange);
             
             CurrentShipLimit = 0;
         }
@@ -41,6 +42,7 @@ namespace _Project.Scripts.Model.Player
         public ReactiveProperty<float> AttackSpeed { get; }
         public ReactiveProperty<float> ProjectileSpeed { get; }
         public ReactiveProperty<int> ShipLimit { get; }
+        public ReactiveProperty<float> AttackRange { get; }
         public int CurrentShipLimit { get; set; }
         public Team Team => _playerData.Team;
 

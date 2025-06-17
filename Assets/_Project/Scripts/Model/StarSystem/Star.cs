@@ -40,43 +40,52 @@ namespace _Project.Scripts.Model.StarSystem
             Team = team;
             _player = _players.First(player => player.Team == Team);
 
-            _player.StarHealth.Subscribe(change =>
+            CurrentHealth = new ReactiveProperty<float>(_player.StarHealth.Value);
+            MaxHealth = CurrentHealth.Value;
+            _view.UpdateHealth(CurrentHealth.Value);
+            
+            _player.StarHealth.Skip(1).Subscribe(change =>
             {
-                CurrentHealth += change - MaxHealth;
+                CurrentHealth.Value += change - MaxHealth;
                 MaxHealth = change;
-                _view.UpdateHealth(CurrentHealth);
+                _view.UpdateHealth(CurrentHealth.Value);
             }).AddTo(this);
 
             _spawner = StartCoroutine(SpawnAgent());
         }
-        
-        public float CurrentHealth { get; private set; }
+
+        public Vector3 Position => transform.position;
+        public ReactiveProperty<float> CurrentHealth { get; private set; }
         public float MaxHealth { get; private set; }
-        public bool IsAlive => CurrentHealth > Constants.Epsilon;
+        public ReactiveProperty<bool> IsAlive { get; } = new();
         public Team Team { get; private set; }
         public List<Star> ConnectedStars { get; private set; } = new();
         public IReadOnlyList<StarConnection> Connections => _starConnections; 
         
         public void TakeDamage(Team attackerTeam, float amount)
         {
-            CurrentHealth = Mathf.Clamp(CurrentHealth - amount, 0, MaxHealth);
-
-            if (!IsAlive)
+            CurrentHealth.Value = Mathf.Clamp(CurrentHealth.Value - amount, 0, MaxHealth);
+            
+            if (CurrentHealth.Value < 0.1f)
             {
                 // TODO: делать запрос к некоторой системе для получения статов
                 // TODO: нужно ли сообщать о смене команды?
                 MaxHealth = 1000;
-                CurrentHealth = MaxHealth / 2;
+                CurrentHealth.Value = MaxHealth / 2;
                 Team = attackerTeam;
                 StopCoroutine(_spawner);
                 _spawner = StartCoroutine(SpawnAgent());
+                
+                _view.UpdateView(Team);
             }
+            
+            _view.UpdateHealth(CurrentHealth.Value);
         }
 
         public void Heal(float amount)
         {
-            CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, MaxHealth);
-            _view.UpdateHealth(CurrentHealth);
+            CurrentHealth.Value = Mathf.Clamp(CurrentHealth.Value + amount, 0, MaxHealth);
+            _view.UpdateHealth(CurrentHealth.Value);
         }
 
         public void AddConnection(StarConnection connection)
@@ -88,13 +97,23 @@ namespace _Project.Scripts.Model.StarSystem
         {
             var delay = new WaitForSeconds(Constants.SpawnDelay);
             
-            while (IsAlive)
+            while (CurrentHealth.Value > 0.1f)
             {
                 yield return delay;
+                
                 if (_player.CurrentShipLimit <= _player.ShipLimit.Value)
                 {
                     _player.CurrentShipLimit += 1;
                     var ship = SpawnInTorusArea();
+
+                    ship.IsAlive.Subscribe(newValue =>
+                    {
+                        if (newValue == false)
+                        {
+                            _player.CurrentShipLimit--;
+                        }
+                    }).AddTo(this);
+                    
                     ShipSpawned?.Invoke(ship);
                 }
             }

@@ -1,10 +1,14 @@
-﻿namespace _Project.Scripts.Model.Health
+﻿using UniRx;
+using UnityEngine;
+
+namespace _Project.Scripts.Model.Health
 {
     public interface IHealth
     {
-        float CurrentHealth { get; }
+        Vector3 Position { get; }
+        ReactiveProperty<float> CurrentHealth { get; }
         float MaxHealth { get; }
-        bool IsAlive { get; }
+        ReactiveProperty<bool> IsAlive { get; }
         Team Team { get; }
         
         void TakeDamage(Team attackerTeam, float amount);

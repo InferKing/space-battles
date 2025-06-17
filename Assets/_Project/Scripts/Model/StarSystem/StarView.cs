@@ -23,7 +23,6 @@ namespace _Project.Scripts.Model.StarSystem
         public void UpdateHealth(float health)
         {
             _text.text = $"{health:N0}";
-            
         }
     }
 }

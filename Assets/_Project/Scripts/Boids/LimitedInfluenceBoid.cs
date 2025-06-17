@@ -11,9 +11,9 @@ namespace _Project.Scripts.Boids
         [field: SerializeField, Header("Основные параметры")]
         public float StartSpeed { get; private set; } = 5f;
 
-        [field: SerializeField] public float MaxSpeed { get; private set; } = 7f;
+        [field: SerializeField] public float MaxSpeed { get; set; } = 7f;
 
-        [field: SerializeField] public float Acceleration { get; private set; } = 10f;
+        [field: SerializeField] public float Acceleration { get; set; } = 10f;
 
         [field: SerializeField] public float NeighborRadius { get; private set; } = 3f;
 

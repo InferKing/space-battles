@@ -18,9 +18,9 @@ namespace _Project.Scripts.Boids
         [field: SerializeField, Header("Основные параметры")]
         public float StartSpeed { get; private set; } = 5f;
 
-        [field: SerializeField] public float MaxSpeed { get; private set; } = 7f;
+        [field: SerializeField] public float MaxSpeed { get; set; } = 7f;
 
-        [field: SerializeField] public float Acceleration { get; private set; } = 10f;
+        [field: SerializeField] public float Acceleration { get; set; } = 10f;
 
         [field: SerializeField] public float NeighborRadius { get; private set; } = 3f;
 
@@ -54,7 +54,7 @@ namespace _Project.Scripts.Boids
 
         public Vector2 Velocity { get; private set; }
         public Vector3 Position => transform.position;
-        
+
         private Rigidbody2D _rb;
         private List<Ship> _ships;
         private bool _isLockAutoRotation;
@@ -145,9 +145,36 @@ namespace _Project.Scripts.Boids
 
         public void Move()
         {
-            var cohesion = Cohesion() * CohesionWeight;
-            var alignment = Alignment() * AlignmentWeight;
-            var separation = Separation() * SeparationWeight;
+            var center = Vector2.zero;
+            var avgVelocity = Vector2.zero;
+            var avoid = Vector2.zero;
+            var countAlignment = 0;
+            var countCohesion = 0;
+            
+            foreach (var boid in _ships)
+            {
+                if (boid == null) continue;
+                
+                var distance = Vector2.Distance(transform.position, boid.Position);
+                
+                if (distance < NeighborRadius)
+                {
+                    center += (Vector2)boid.transform.position;
+                    countCohesion++;
+                    
+                    avgVelocity += boid.Velocity;
+                    countAlignment++;
+                }
+                
+                if (distance < SeparationRadius && distance > 0)
+                {
+                    avoid += ((Vector2)transform.position - (Vector2)boid.Position) / distance;
+                }
+            }
+            
+            var cohesion = countCohesion > 0 ? (center / countCohesion - (Vector2)transform.position).normalized : Vector2.zero * CohesionWeight;
+            var alignment = countAlignment > 0 ? (avgVelocity / countAlignment).normalized : Vector2.zero * AlignmentWeight;
+            var separation = avoid.normalized * SeparationWeight;
             var avoidance = AvoidObstacles() * AvoidanceWeight;
             var targetAttractionWeight = CalculateTargetAttractionWeight();
             var targetAttraction = (Target - (Vector2)transform.position).normalized * targetAttractionWeight;

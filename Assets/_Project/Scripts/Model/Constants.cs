@@ -16,7 +16,7 @@ namespace _Project.Scripts.Model
         public const DifficultyType OptimalDifficulty = DifficultyType.Medium;
         public const MapType OptimalMapSize = MapType.Medium;
         public const EdgeAmountType OptimalEdgeAmount = EdgeAmountType.Medium;
-        public const float SpawnDelay = 0.5f;
+        public const float SpawnDelay = 0.85f;
         public const float OptimalDistanceBetweenStars = 10f;
         public const float OptimalGenerationArea = 30f;
         public const float OptimalTeamRadius = 12f;
@@ -33,7 +33,7 @@ namespace _Project.Scripts.Model
         public const float MaxBaseStarHealth = 1500f;
         public const float MinBaseDamage = 3f;
         public const float MaxBaseDamage = 10f;
-        public const float MinBaseAttackSpeed = 0.5f;
+        public const float MinBaseAttackSpeed = 0.2f;
         public const float MaxBaseAttackSpeed = 1.5f;
         public const int MinBaseShipLimit = 8;
         public const int MaxBaseShipLimit = 20;

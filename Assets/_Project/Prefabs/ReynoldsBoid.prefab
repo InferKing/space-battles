@@ -207,7 +207,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aba912d33f384c58bf0f41f17da4cac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _projectile: {fileID: 2223295314670716814, guid: 0801cd2087fc4f7458c02d3cc5ff6be5, type: 3}
   _view: {fileID: 3185779928983050527}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &3185779928983050527
 MonoBehaviour:
   m_ObjectHideFlags: 0

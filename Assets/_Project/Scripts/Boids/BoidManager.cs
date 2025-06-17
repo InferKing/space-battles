@@ -5,6 +5,7 @@ using _Project.Scripts.Model;
 using _Project.Scripts.Model.Core;
 using _Project.Scripts.Model.Field;
 using _Project.Scripts.Model.StarSystem;
+using UniRx;
 
 namespace _Project.Scripts.Boids
 {
@@ -14,6 +15,7 @@ namespace _Project.Scripts.Boids
         private List<Star> _allStars;
         private Dictionary<Team, List<Ship>> _matchTeammates;
         private FieldGenerator _fieldGenerator;
+        private CompositeDisposable _disposable = new();
         
         public BoidManager(FieldGenerator fieldGenerator)
         {
@@ -39,7 +41,9 @@ namespace _Project.Scripts.Boids
         public void Dispose()
         {
             _allStars.ForEach(star => star.ShipSpawned -= OnShipSpawned);
-            _fieldGenerator.StarsSpawned += OnStarsSpawned;
+            _fieldGenerator.StarsSpawned -= OnStarsSpawned;
+            
+            _disposable?.Dispose();
         }
         
         public List<Ship> GetTeammates(Team team)
@@ -50,6 +54,16 @@ namespace _Project.Scripts.Boids
         private void OnShipSpawned(Ship ship)
         {
             _matchTeammates[ship.Team].Add(ship);
+
+            ship.IsAlive.Subscribe(newValue =>
+            {
+                if (newValue == false)
+                {
+                    _matchTeammates[ship.Team].Remove(ship);
+                    
+                    UnityEngine.Object.Destroy(ship.gameObject);
+                }
+            }).AddTo(_disposable);
         }
     }
 }

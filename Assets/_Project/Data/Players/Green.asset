@@ -18,6 +18,7 @@ MonoBehaviour:
   <BaseShipHealth>k__BackingField: 20
   <BaseStarHealth>k__BackingField: 1500
   <BaseDamage>k__BackingField: 5
-  <BaseAttackSpeed>k__BackingField: 1.1
+  <BaseAttackSpeed>k__BackingField: 0.55
   <BaseProjectileSpeed>k__BackingField: 6
   <BaseShipLimit>k__BackingField: 10
+  <AttackRange>k__BackingField: 2.5
